@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <title>Bontle, Will You Be My Valentine? 💖</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
     <style>
         * { box-sizing: border-box; }
 
@@ -90,7 +90,7 @@
             font-weight: 600;
             cursor: pointer;
             margin: 10px;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
         }
 
         #yesBtn {
@@ -106,6 +106,8 @@
 
         #noBtn {
             background-color: #ddd;
+            color: #333;
+            position: relative; /* will switch to fixed when it runs away */
         }
 
         .hidden { display: none; }
@@ -120,7 +122,7 @@
 
         @keyframes pop {
             from { transform: scale(0.5); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            to   { transform: scale(1);   opacity: 1; }
         }
 
         .countdown {
@@ -139,28 +141,56 @@
         .floating-heart {
             position: absolute;
             font-size: 20px;
-            animation: rise 6s linear infinite;
-            opacity: 0.7;
+            animation: rise 6s linear forwards;
+            opacity: 0.8;
+            pointer-events: none;
         }
 
         @keyframes rise {
-            0% { transform: translateY(0) scale(1); opacity: 0.7; }
+            0%   { transform: translateY(0) scale(1);   opacity: 0.8; }
             100% { transform: translateY(-800px) scale(1.5); opacity: 0; }
         }
 
+        /* Balloons after YES */
+        .balloon {
+            position: fixed;
+            bottom: -80px;
+            font-size: 28px;
+            filter: drop-shadow(0 6px 10px rgba(0,0,0,.15));
+            pointer-events: none;
+            animation: balloonRise linear forwards;
+        }
+        @keyframes balloonRise {
+            0%   { transform: translateY(0);   opacity: 1; }
+            100% { transform: translateY(-120vh); opacity: 0; }
+        }
+
+        /* Little toast for No warning */
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 20px;
+            transform: translateX(-50%);
+            background: #1a1a2e;
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,.15);
+            z-index: 50;
+            font-size: .95em;
+        }
+
         @media (max-width: 480px) {
-            .card {
-                padding: 30px 20px;
-            }
+            .card { padding: 30px 20px; }
             h1 { font-size: 2em; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Background Music -->
+    <!-- Background Music (note: most browsers require user interaction before audio plays) -->
     <audio id="bgMusic" autoplay loop>
-        <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+        <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg" />
     </audio>
 
     <div class="card">
@@ -176,12 +206,12 @@
         
         <div class="buttons">
             <button id="yesBtn">Yes 🥰</button>
-            <button id="noBtn">No 🙈</button>
+            <button id="noBtn" title="This button doesn’t actually work 😉">No 🙈</button>
         </div>
 
         <div id="celebration" class="hidden celebrate">
-            SHE SAID YES!!! 💕💍✨<br>
-            Evidence & Bontle forever starts now 😌❤️
+            SHE SAID YES!!! 💕💍✨<br />
+            Evidence &amp; Bontle forever starts now 😌❤️
         </div>
 
         <footer>
@@ -195,46 +225,120 @@
         const celebration = document.getElementById('celebration');
         const countdown = document.getElementById('countdown');
 
-        // Countdown to Feb 14
+        // Countdown to Feb 14 (updates every second)
         function updateCountdown() {
             const now = new Date();
-            const year = now.getMonth() > 1 ? now.getFullYear() + 1 : now.getFullYear();
-            const valentines = new Date(year, 1, 14);
+            const year = now.getMonth() > 1 ? now.getFullYear() + 1 : now.getFullYear(); // if after Feb, target next year
+            const valentines = new Date(year, 1, 14, 0, 0, 0);
             const diff = valentines - now;
 
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            countdown.innerHTML = ⏳ ${days} days until Valentine’s Day 💘;
+            const days  = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
+            const hours = Math.max(0, Math.floor((diff / (1000 * 60 * 60)) % 24));
+            const mins  = Math.max(0, Math.floor((diff / (1000 * 60)) % 60));
+            const secs  = Math.max(0, Math.floor((diff / 1000) % 60));
+
+            countdown.innerHTML = `⏳ ${days}d ${hours}h ${mins}m ${secs}s until Valentine’s Day 💘`;
         }
         updateCountdown();
         setInterval(updateCountdown, 1000);
 
+        // YES: show celebration + launch balloons + sprinkle hearts
         yesBtn.addEventListener('click', () => {
             celebration.classList.remove('hidden');
-            createHearts(30);
+            launchBalloons(20);  // 🎈 balloons float up
+            sprinkleHearts(26);  // extra cute hearts in the background
         });
 
-        noBtn.addEventListener('mouseover', () => {
-            const x = Math.random() * window.innerWidth * 0.8;
-            const y = Math.random() * window.innerHeight * 0.8;
-            noBtn.style.position = 'absolute';
-            noBtn.style.left = ${x}px;
-            noBtn.style.top = ${y}px;
+        // NO: show a warning (toast + alert), do nothing else
+        noBtn.addEventListener('click', () => {
+            showToast("⚠️ This button doesn’t work. Try ‘Yes’ instead 😉");
+            alert("This button doesn’t work 😅 Please press ‘Yes’ ❤️");
         });
 
-        function createHearts(num) {
+        // Runaway behavior for the No button
+        // - mouseover (desktop)
+        // - focus (keyboard)
+        // - touchstart (mobile)
+        noBtn.addEventListener('mouseover', runAway);
+        noBtn.addEventListener('focus', runAway);
+        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); runAway(); }, { passive: false });
+
+        function runAway() {
+            // Make it 'fixed' so it can jump anywhere on the screen
+            noBtn.style.position = 'fixed';
+
+            const rect = noBtn.getBoundingClientRect();
+
+            const margin = 12; // keep a bit away from edges
+            const maxX = window.innerWidth  - rect.width  - margin;
+            const maxY = window.innerHeight - rect.height - margin;
+
+            const newLeft = clamp(Math.random() * window.innerWidth, margin, maxX);
+            const newTop  = clamp(Math.random() * window.innerHeight, margin, maxY);
+
+            noBtn.style.left = `${newLeft}px`;
+            noBtn.style.top  = `${newTop}px`;
+
+            // Little wiggle effect
+            noBtn.animate([
+                { transform: 'translate(0,0)' },
+                { transform: 'translate(-3px,-3px)' },
+                { transform: 'translate(0,0)' }
+            ], { duration: 200, iterations: 1 });
+
+            showToast("Psst… ‘No’ is out of service today. ‘Yes’ is fully operational ✅");
+        }
+
+        function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+
+        // Create floating hearts (background decoration)
+        function sprinkleHearts(num) {
             for (let i = 0; i < num; i++) {
                 const heart = document.createElement('div');
-                heart.classList.add('floating-heart');
-                heart.innerHTML = '💖';
-                heart.style.left = Math.random() * window.innerWidth + 'px';
-                heart.style.top = window.innerHeight + 'px';
+                heart.className = 'floating-heart';
+                heart.textContent = '💖';
+                heart.style.left = (Math.random() * 100) + 'vw';
+                heart.style.top  = (100 + Math.random() * 20) + 'vh';
                 heart.style.fontSize = (15 + Math.random() * 25) + 'px';
                 document.body.appendChild(heart);
-
-                setTimeout(() => {
-                    heart.remove();
-                }, 6000);
+                setTimeout(() => heart.remove(), 6000);
             }
+        }
+
+        // Launch balloons (after YES)
+        function launchBalloons(count = 16) {
+            for (let i = 0; i < count; i++) {
+                const b = document.createElement('div');
+                b.className = 'balloon';
+                b.textContent = '🎈';
+                b.style.left = Math.random() * 100 + 'vw';
+                const dur = 6 + Math.random() * 4;
+                b.style.animationDuration = dur + 's';
+                b.style.transform = `scale(${0.8 + Math.random() * 0.8})`;
+                document.body.appendChild(b);
+
+                // gentle horizontal sway as it rises
+                const start = performance.now();
+                const sway = (Math.random() * 2 - 1) * 60;
+                function step(t) {
+                    const p = (t - start) / (dur * 1000);
+                    if (p >= 1) { b.remove(); return; }
+                    const x = parseFloat(b.style.left) + Math.sin(p * 6) * (sway / 10);
+                    b.style.left = x + 'vw';
+                    requestAnimationFrame(step);
+                }
+                requestAnimationFrame(step);
+            }
+        }
+
+        // Tiny toast helper
+        function showToast(message) {
+            const t = document.createElement('div');
+            t.className = 'toast';
+            t.textContent = message;
+            document.body.appendChild(t);
+            setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .4s'; }, 1400);
+            setTimeout(() => t.remove(), 1900);
         }
     </script>
 
