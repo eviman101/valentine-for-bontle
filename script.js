@@ -1,0 +1,1 @@
+document.getElementById('yesBtn').onclick=()=>document.getElementById('answer').classList.remove('hidden');
