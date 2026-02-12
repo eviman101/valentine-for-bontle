@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bontle, will you be my Valentine? 💖</title>
+  <meta name="description" content="A playful Valentine from Evidence to Bontle with music, a cute puzzle, and fun banter." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Background music -->
+  <audio id="bgm" autoplay muted loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/25/audio_0a0b8b6de2.mp3?filename=romantic-110997.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Floating hearts background canvas -->
+  <div id="hearts"></div>
+
+  <!-- Music control -->
+  <button id="musicToggle" class="music-btn" aria-label="Toggle music">🔈</button>
+
+  <main class="card">
+    <header class="hero">
+      <h1>Hey, <span class="name">Bontle Modise</span> 💐</h1>
+      <p class="tag">I have an extremely official, delightfully unserious question…</p>
+    </header>
+
+    <!-- Little unlock puzzle -->
+    <section class="puzzle" aria-labelledby="puzzleTitle">
+      <h2 id="puzzleTitle">🧩 Mini‑Puzzle: Unlock the “Yes” button</h2>
+      <p class="puzzle-sub">Drag the letters into the correct order to spell your name: <strong>BONTLE</strong> ✨</p>
+      <div class="puzzle-board">
+        <div class="slots" id="slots" aria-label="Target slots" role="list"></div>
+        <div class="tiles" id="tiles" aria-label="Letter tiles" role="list"></div>
+      </div>
+      <p class="puzzle-status" id="puzzleStatus">Arrange the letters to unlock…</p>
+    </section>
+
+    <section class="question">
+      <h2>Will you be my Valentine?</h2>
+      <div class="banter" id="banter">(Pssst… the “No” button is a bit shy 😅)</div>
+      <div class="btn-row">
+        <button id="yesBtn" class="btn yes locked" disabled>YES! 💘</button>
+        <button id="noBtn" class="btn no">Uhm… no 🙈</button>
+      </div>
+    </section>
+
+    <section id="answer" class="answer hidden">
+      <h2>Yaaaaaay! 🎉</h2>
+      <p class="funny">Breaking News: <em>Bontle said YES!</em> Sources confirm Evidence is now smiling like a Wi‑Fi router with full bars. 📶😄</p>
+      <ul class="perks">
+        <li>One (1) premium date with unlimited laughs</li>
+        <li>Complimentary hand‑holding & high‑fives ✋💞</li>
+        <li>A lifetime of inside jokes, starting… now 😂</li>
+      </ul>
+      <p class="sig">— With love, <span>Evidence Madzore</span> 💙</p>
+      <div class="after-yes">
+        <button class="btn outline" id="surpriseBtn">Open a tiny surprise ✨</button>
+        <button class="btn outline" id="dateIdeaBtn">Give us a cute date idea 💡</button>
+      </div>
+      <p class="idea" id="idea"></p>
+    </section>
+
+    <footer class="footer">
+      <small>Made with ❤️ by Evidence • <span id="year"></span>
+        <span class="sep">•</span>
+        <a href="#" id="unmuteHint">Click anywhere to unmute music</a>
+      </small>
+    </footer>
+  </main>
+
+  <!-- Surprise modal template -->
+  <template id="surpriseTemplate">
+    <div class="modal-backdrop">
+      <div class="modal">
+        <button class="close" aria-label="Close">✖</button>
+        <h3>For you, Bontle 🌹</h3>
+        <p>
+          You’re the plot twist my day needed. Thanks for saying yes — now we get to make adorable memories on purpose. 💞
+        </p>
+        <img alt="cute hearts" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='130' viewBox='0 0 240 130'><g fill='%23ff5d8f'><path d='M80 40c0-11 9-20 20-20 7 0 13 3 17 8 4-5 10-8 17-8 11 0 20 9 20 20 0 31-37 41-37 41S80 71 80 40z'/></g></svg>' />
+      </div>
+    </div>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>
