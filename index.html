@@ -1,41 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>For Bontle — from Evidence 💖</title>
-  <meta name="description" content="A very simple, very cute Valentine for Bontle from Evidence." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Sacramento&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bontle, Will You Be My Valentine? 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fad0c4, #ffdde1);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: #ff4b7d;
+            font-size: 2.4em;
+            margin-bottom: 5px;
+        }
+
+        h2 {
+            color: #ff4b7d;
+            margin-top: 20px;
+        }
+
+        p {
+            font-size: 1.1em;
+            color: #555;
+            margin: 8px 0;
+        }
+
+        .heart {
+            font-size: 60px;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.25); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.25); }
+            100% { transform: scale(1); }
+        }
+
+        .buttons {
+            margin-top: 25px;
+            position: relative;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        #yesBtn {
+            background-color: #ff4b7d;
+            color: white;
+            box-shadow: 0 8px 20px rgba(255,75,125,0.4);
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.1);
+            background-color: #ff2e63;
+        }
+
+        #noBtn {
+            background-color: #ddd;
+        }
+
+        .hidden { display: none; }
+
+        .celebrate {
+            font-size: 1.4em;
+            color: #ff4b7d;
+            margin-top: 20px;
+            font-weight: 600;
+            animation: pop 0.6s ease forwards;
+        }
+
+        @keyframes pop {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .countdown {
+            margin-top: 15px;
+            font-weight: 600;
+            color: #ff4b7d;
+        }
+
+        footer {
+            margin-top: 25px;
+            font-size: 0.9em;
+            color: #888;
+        }
+
+        /* Floating hearts */
+        .floating-heart {
+            position: absolute;
+            font-size: 20px;
+            animation: rise 6s linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes rise {
+            0% { transform: translateY(0) scale(1); opacity: 0.7; }
+            100% { transform: translateY(-800px) scale(1.5); opacity: 0; }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 30px 20px;
+            }
+            h1 { font-size: 2em; }
+        }
+    </style>
 </head>
 <body>
-  <div class="bg">
-    <div class="big-heart" aria-hidden="true"></div>
-    <div id="sparkles"></div>
-  </div>
 
-  <main class="card">
-    <h1 class="hand">Hi Bontle 💐</h1>
-    <p class="tag">I have a tiny question…</p>
+    <!-- Background Music -->
+    <audio id="bgMusic" autoplay loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+    </audio>
 
-    <h2 class="q">Will you be my Valentine?</h2>
+    <div class="card">
+        <div class="heart">💖</div>
+        <h1>Bontle Modise</h1>
+        <p>From the moment I met you, my heart has been smiling.</p>
+        <p>You make everything brighter, softer, sweeter, and magical ✨</p>
+        <p>Every laugh. Every smile. Every moment with you means the world to me.</p>
 
-    <div class="row">
-      <button id="yesBtn" class="btn yes">Yes 💘</button>
-      <button id="noBtn" class="btn no" title="Are you suuuure?">Maybe later 🙈</button>
+        <div class="countdown" id="countdown"></div>
+
+        <h2>Will you be my Valentine? 💌</h2>
+        
+        <div class="buttons">
+            <button id="yesBtn">Yes 🥰</button>
+            <button id="noBtn">No 🙈</button>
+        </div>
+
+        <div id="celebration" class="hidden celebrate">
+            SHE SAID YES!!! 💕💍✨<br>
+            Evidence & Bontle forever starts now 😌❤️
+        </div>
+
+        <footer>
+            Made with ❤️ by Evidence Madzore
+        </footer>
     </div>
 
-    <div id="answer" class="answer hidden">
-      <p class="big">Yay! 🎉</p>
-      <p>You just made <strong>Evidence</strong> very, very happy. 😊</p>
-      <p class="sig">— With love, Evidence Madzore</p>
-    </div>
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const celebration = document.getElementById('celebration');
+        const countdown = document.getElementById('countdown');
 
-    <footer class="foot">Made with ❤️ for <span class="name">Bontle Modise</span> • <span id="year"></span></footer>
-  </main>
+        // Countdown to Feb 14
+        function updateCountdown() {
+            const now = new Date();
+            const year = now.getMonth() > 1 ? now.getFullYear() + 1 : now.getFullYear();
+            const valentines = new Date(year, 1, 14);
+            const diff = valentines - now;
 
-  <script src="script.js"></script>
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            countdown.innerHTML = ⏳ ${days} days until Valentine’s Day 💘;
+        }
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        yesBtn.addEventListener('click', () => {
+            celebration.classList.remove('hidden');
+            createHearts(30);
+        });
+
+        noBtn.addEventListener('mouseover', () => {
+            const x = Math.random() * window.innerWidth * 0.8;
+            const y = Math.random() * window.innerHeight * 0.8;
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = ${x}px;
+            noBtn.style.top = ${y}px;
+        });
+
+        function createHearts(num) {
+            for (let i = 0; i < num; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('floating-heart');
+                heart.innerHTML = '💖';
+                heart.style.left = Math.random() * window.innerWidth + 'px';
+                heart.style.top = window.innerHeight + 'px';
+                heart.style.fontSize = (15 + Math.random() * 25) + 'px';
+                document.body.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 6000);
+            }
+        }
+    </script>
+
 </body>
 </html>
